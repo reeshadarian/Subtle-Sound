@@ -13,18 +13,20 @@ from scipy.io import wavfile
 import librosa
 import librosa.display
 import PySimpleGUI as sg
+import matplotlib as mpl
+mpl.rcParams['agg.path.chunksize'] = 10000
 
 def make_plots(filename, signal_type,  file_path):
     # Read file to get buffer                                                                                               
     ifile = wave.open(filename)
     samples = ifile.getnframes()
     audio = ifile.readframes(samples)
-    
+
     audio_as_np_int16 = np.frombuffer(audio, dtype=np.int16)
     audio_as_np_float32 = audio_as_np_int16.astype(np.float32)
     max_int16 = 2**15
     audio_normalised = audio_as_np_float32 / max_int16
-    
+
     t = np.linspace(0, len(audio_normalised)/44100, len(audio_normalised))
     plt.plot(t[:len(audio_normalised)], audio_normalised)
     plt.title("Amplitude ({0})".format(signal_type))
@@ -42,11 +44,10 @@ def make_plots(filename, signal_type,  file_path):
     plt.savefig(file_path+signal_type+"Spectogram.png", dpi = 1200)
     plt.close()
 
-def measurePitch(file_name, f0min = 75, f0max =500, unit = 'Hertz', sound_type = None):
+def measurePitch(file_name, f0min = 20, f0max = 1000, unit = 'Hertz', sound_type = None):
     voiceID = parselmouth.Sound(file_name)
     sound = parselmouth.Sound(voiceID) # read the sound
-    pitch = call(sound, "To Pitch", 0.0, f0min, f0max) #create a praat pitch object
-    harmonicity = call(sound, "To Harmonicity (cc)", 0.01, 75, 0.1, 1.0)
+    harmonicity = call(sound, "To Harmonicity (cc)", 0.01, 20, 0.1, 1.0)
     hnr = call(harmonicity, "Get mean", 0, 0)
     pointProcess = call(sound, "To PointProcess (periodic, cc)", f0min, f0max)
     localJitter = call(pointProcess, "Get jitter (local)", 0, 0, 0.0001, 0.02, 1.3)
@@ -115,9 +116,9 @@ def display_data(signal_type,  patient_name):
 layout = [  [sg.InputText(key = 'patientNameSearch'), sg.Button("Search Patient", key='patientNameSearchButton')],
             [sg.Text('Patient Name'), sg.InputText(key='patientName')],
             
-            [sg.Button('Capture Heart', key='heartRec'), sg.Button('Stop', disabled=True, key='heartStop'), sg.Button("Configure", key='heartConf')],
-            [sg.Button('Capture Breath', key='breathRec'), sg.Button('Stop', disabled=True, key='breathStop'), sg.Button("Configure", key='breathConf')],
-            [sg.Button('Capture Speech', key='speechRec'), sg.Button('Stop', disabled=True, key='speechStop'), sg.Button("Configure", key='speechConf')],
+            [sg.Button('Capture Heart', key='heartRec'), sg.Button('Stop', disabled=True, key='heartStop')],
+            [sg.Button('Capture Breath', key='breathRec'), sg.Button('Stop', disabled=True, key='breathStop')],
+            [sg.Button('Capture Speech', key='speechRec'), sg.Button('Stop', disabled=True, key='speechStop')],
             [sg.Text("Message:", size = (50, 1), key='messages')],
             [sg.Button('Done'), sg.Button('Cancel')]]
 
@@ -246,10 +247,10 @@ while True:
         window['messages'].update('Message: Performing speech analyses')
         window.refresh()
         speechStats = display_data('speech', patient_name)
-        window['messages'].update('Message: Performing lung sound analyses')
+        window['messages'].update('Message: Performing heart sound analyses')
         window.refresh()
         heartStats = display_data('heart', patient_name)
-        window['messages'].update('Message: Performing heart sound analyses')
+        window['messages'].update('Message: Performing lung sound analyses')
         window.refresh()
         breathStats = display_data('breath', patient_name)
         s = """window.onload = function() {
