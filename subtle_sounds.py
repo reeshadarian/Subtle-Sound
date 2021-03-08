@@ -16,6 +16,19 @@ import PySimpleGUI as sg
 import matplotlib as mpl
 mpl.rcParams['agg.path.chunksize'] = 10000
 
+p = pyaudio.PyAudio()
+info = p.get_host_api_info_by_index(0)
+numdevices = info.get('deviceCount')
+mics_idx = []
+stetho_idx = 0
+for i in range(0, numdevices):
+        if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+            if ("AudioBox" in p.get_device_info_by_host_api_device_index(0, i).get('name')):
+                mics_idx.append(i)
+            if ("Microphone (Realtek" in p.get_device_info_by_host_api_device_index(0, i).get('name')):
+                stetho_idx = i
+p.terminate()
+
 def make_plots(filename, signal_type,  file_path):
     # Read file to get buffer                                                                                               
     ifile = wave.open(filename)
@@ -59,21 +72,37 @@ def measurePitch(file_name, f0min = 20, f0max = 1000, unit = 'Hertz', sound_type
 def shortTermAnalyses(sound_type, filename, patient_name):
     fs, signal = wavfile.read(filename)
     if sound_type == 'speech':
+        print(filename, signal)
         s = audioSegmentation.silence_removal(signal, fs, 0.5, 0.1, weight=0.2)
         signal2 = np.concatenate([signal[int((i[0]+0.1)*fs):int((i[1]+0.1)*fs)] for i in s])
         wavfile.write("database/{0}/speechFileSegmented.wav".format(patient_name), fs, signal2)
-    return ShortTermFeatures.feature_extraction(signal, fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        s1 = ShortTermFeatures.feature_extraction(signal[:, 0], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        s2 = ShortTermFeatures.feature_extraction(signal[:, 1], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        
+        filename = filename[:-4] + "1.wav"
+        fs, signal = wavfile.read(filename)
+        s = audioSegmentation.silence_removal(signal, fs, 0.5, 0.1, weight=0.2)
+        signal2 = np.concatenate([signal[int((i[0]+0.1)*fs):int((i[1]+0.1)*fs)] for i in s])
+        wavfile.write("database/{0}/speechFileSegmented1.wav".format(patient_name), fs, signal2)
+        s3 = ShortTermFeatures.feature_extraction(signal[:, 0], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        s4 = ShortTermFeatures.feature_extraction(signal[:, 1], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        print((s1+s2+s3+s4)/4)
+        return (s1+s2+s3+s4)/4
+        
+    else:
+        return ShortTermFeatures.feature_extraction(signal, fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
 
 def display_data(signal_type,  patient_name):
     res = ''
     file_path = 'database/' + patient_name + '/'
-    filename = file_path + signal_type + 'File.wav'
+    filename = file_path + signal_type + 'File.wav' 
     if signal_type == 'heart':
         title = 'Heart Data'
         
     elif signal_type == 'speech':
         title = 'Speech Data'
         segmented = file_path + signal_type + 'FileSegmented.wav'
+        segmented1 = file_path + signal_type + 'FileSegmented1.wav'
     else:
         title = 'Breathing Data'
     ifile = wave.open(filename)
@@ -103,7 +132,9 @@ def display_data(signal_type,  patient_name):
         plt.savefig(file_path+signal_type+names[i]+'.png', dpi = 1200)
         plt.close()
     if signal_type == "speech":
-        hnr, localJitter, localabsoluteJitter, localShimmer, localdbShimmer = measurePitch(segmented)
+        hnr, localJitter, localabsoluteJitter, localShimmer, localdbShimmer = measurePitch(segmented, sound_type='speech')
+        hnr1, localJitter1, localabsoluteJitter1, localShimmer1, localdbShimmer1 = measurePitch(segmented, sound_type='speech')
+        hnr, localJitter, localabsoluteJitter, localShimmer, localdbShimmer = hnr + hnr1, localJitter + localJitter1, localabsoluteJitter + localabsoluteJitter1, localShimmer + localShimmer1, localdbShimmer + localdbShimmer1
     else:
         hnr, localJitter, localabsoluteJitter, localShimmer, localdbShimmer = measurePitch(filename)
     res += 'HNR: ' + str(hnr) + '<br>'
@@ -128,6 +159,10 @@ def callback(in_data, frame_count, time_info, status):
     Recordframes.append(in_data)
     return (in_data, pyaudio.paContinue)
 
+def callback1(in_data1, frame_count1, time_info1, status1):
+    Recordframes1.append(in_data1)
+    return (in_data1, pyaudio.paContinue)
+
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
@@ -145,12 +180,15 @@ while True:
         window['messages'].update('Message: Recording speech')
         window.refresh()
         Recordframes = []
+        Recordframes1 = []
         patient_name = values['patientName']
         if patient_name != '':
             if not os.path.exists('database/{0}/'.format(patient_name)):
                 os.makedirs('database/{0}/'.format(patient_name))
-            stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = 2, frames_per_buffer=1024, stream_callback=callback)
+            stream = p.open(format=pyaudio.paInt16, channels=2, rate=44100, input=True, input_device_index = mics_idx[0], frames_per_buffer=1024, stream_callback=callback)
             stream.start_stream()
+            stream1 = p.open(format=pyaudio.paInt16, channels=2, rate=44100, input=True, input_device_index = mics_idx[1], frames_per_buffer=1024, stream_callback=callback1)
+            stream1.start_stream()
             window['speechRec'].update(disabled=True)
             window['speechStop'].update(disabled=False)
         else:
@@ -167,7 +205,7 @@ while True:
         if patient_name != '':
             if not os.path.exists('database/{0}/'.format(patient_name)):
                 os.makedirs('database/{0}/'.format(patient_name))
-            stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = 1, frames_per_buffer=1024, stream_callback=callback)
+            stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = stetho_idx, frames_per_buffer=1024, stream_callback=callback)
             stream.start_stream()
             window['heartRec'].update(disabled=True)
             window['heartStop'].update(disabled=False)
@@ -185,7 +223,7 @@ while True:
         if patient_name != '':
             if not os.path.exists('database/{0}/'.format(patient_name)):
                 os.makedirs('database/{0}/'.format(patient_name))
-            stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = 1, frames_per_buffer=1024, stream_callback=callback)
+            stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = stetho_idx, frames_per_buffer=1024, stream_callback=callback)
             stream.start_stream()
             window['breathRec'].update(disabled=True)
             window['breathStop'].update(disabled=False)
@@ -197,16 +235,23 @@ while True:
     elif event == 'speechStop':
         stream.stop_stream()
         stream.close()
+        stream1.stop_stream()
+        stream1.close()
         p.terminate()
         window.refresh()
         window['messages'].update('Message:')
         window.refresh()
         patient_name = values['patientName']
         waveFile = wave.open('database/{0}/speechFile.wav'.format(patient_name), 'wb')
-        waveFile.setnchannels(1)
+        waveFile.setnchannels(2)
         waveFile.setsampwidth(p.get_sample_size(pyaudio.paInt16))
         waveFile.setframerate(44100)
         waveFile.writeframes(b''.join(Recordframes))
+        waveFile1 = wave.open('database/{0}/speechFile1.wav'.format(patient_name), 'wb')
+        waveFile1.setnchannels(2)
+        waveFile1.setsampwidth(p.get_sample_size(pyaudio.paInt16))
+        waveFile1.setframerate(44100)
+        waveFile1.writeframes(b''.join(Recordframes1))
         window['speechRec'].update(disabled=False)
         window['speechStop'].update(disabled=True)
         
