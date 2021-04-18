@@ -1,56 +1,311 @@
 <!DOCTYPE html>
     <head><title id='patientNameTitle'></title></head>
     <body>
-        <h1 id='reportTitle'></h1>
-        <h2>Heart Sound Report</h2>
-        <img src="./heartPlot.png" alt="Heart data plot" id="heartPlot", width="800">
-        <img src="./heartSpectogram.png" alt="Heart Spectogram" id="heartSpectogram", width="800"><br>
-        <audio controls>
-            <source src="./heartFile.wav" type="audio/wav" id="heartAudio">
+        <h1 id="reportTitle"></h1>
+        <h2>Heart (A) Sound Report</h2>
+        <img src="./heartAPlot.png" alt="Heart (A) data plot" id="heartAPlot" ,="" width="800">
+        <img src="./heartASpectogram.png" alt="Heart (A) Spectogram" id="heartASpectogram" ,="" width="800"><br>
+        <audio controls="">
+            <source src="./heartAFile.wav" type="audio/wav" id="heartAAudio">
             Your browser does not support the audio element.
         </audio>
-        <p id='heartStats'></p>
-        <img src="./heartZCR.png" alt="Heart ZCR" id="heartZCR", width="800">
-        <img src="./heartShort Time Energy.png" alt="Heart Short Time Energy" id="heartShortEnergy", width="800">
-        <img src="./heartEnergy Entropy.png" alt="Heart Energy Entropy" id="heartEnergyEntropy", width="800">
-        <img src="./heartSpectral Centroid.png" alt="Heart Spectral Centroid" id="heartSpectralCentroid", width="800">
-        <img src="./heartSpectral Spread.png" alt="Heart Spectral Spread" id="heartSpectralSpread", width="800">
-        <img src="./heartSpectral Entropy.png" alt="Heart Spectral Entropy" id="heartSpectralEntropy", width="800">
-        <img src="./heartSpectral Flux.png" alt="Heart Spectral Flux" id="heartSpectralFlux", width="800">
-        <img src="./heartSpectral Rolloff.png" alt="Heart Spectral Rolloff" id="heartSpectralRolloff", width="800">
+        <p id="heartAStats"></p>
+        <img src="./heartAZCR.png" alt="Heart (A) ZCR" id="heartAZCR" ,="" width="800">
+        <img src="./heartAShort Time Energy.png" alt="Heart (A) Short Time Energy" id="heartAShortEnergy" ,="" width="800">
+        <img src="./heartAEnergy Entropy.png" alt="Heart (A) Energy Entropy" id="heartAEnergyEntropy" ,="" width="800">
+        <img src="./heartASpectral Centroid.png" alt="Heart (A) Spectral Centroid" id="heartASpectralCentroid" ,="" width="800">
+        <img src="./heartASpectral Spread.png" alt="Heart (A) Spectral Spread" id="heartASpectralSpread" ,="" width="800">
+        <img src="./heartASpectral Entropy.png" alt="Heart (A) Spectral Entropy" id="heartASpectralEntropy" ,="" width="800">
+        <img src="./heartASpectral Flux.png" alt="Heart (A) Spectral Flux" id="heartASpectralFlux" ,="" width="800">
+        <img src="./heartASpectral Rolloff.png" alt="Heart (A) Spectral Rolloff" id="heartASpectralRolloff" ,="" width="800">
+        
+        <h2>Heart (P) Sound Report</h2>
+        <img src="./heartPPlot.png" alt="Heart (P) data plot" id="heartPPlot" ,="" width="800">
+        <img src="./heartPSpectogram.png" alt="Heart (P) Spectogram" id="heartPSpectogram" ,="" width="800"><br>
+        <audio controls="">
+            <source src="./heartPFile.wav" type="audio/wav" id="heartPAudio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="heartPStats"></p>
+        <img src="./heartPZCR.png" alt="Heart (P) ZCR" id="heartPZCR" ,="" width="800">
+        <img src="./heartPShort Time Energy.png" alt="Heart (P) Short Time Energy" id="heartPShortEnergy" ,="" width="800">
+        <img src="./heartPEnergy Entropy.png" alt="Heart (P) Energy Entropy" id="heartPEnergyEntropy" ,="" width="800">
+        <img src="./heartPSpectral Centroid.png" alt="Heart (P) Spectral Centroid" id="heartPSpectralCentroid" ,="" width="800">
+        <img src="./heartPSpectral Spread.png" alt="Heart (P) Spectral Spread" id="heartPSpectralSpread" ,="" width="800">
+        <img src="./heartPSpectral Entropy.png" alt="Heart (P) Spectral Entropy" id="heartPSpectralEntropy" ,="" width="800">
+        <img src="./heartPSpectral Flux.png" alt="Heart (P) Spectral Flux" id="heartPSpectralFlux" ,="" width="800">
+        <img src="./heartPSpectral Rolloff.png" alt="Heart (P) Spectral Rolloff" id="heartPSpectralRolloff" ,="" width="800">
 
-        <h2>Breath Sound Report</h2>
-        <img src="./breathPlot.png" alt="Breath data plot" id="breathPlot" width="800">
-        <img src="./breathSpectogram.png" alt="Breath Spectogram" id="breathSpectogram" width="800"><br>
-        <audio controls>
-            <source src="./breathFile.wav" type="audio/wav" id="breathAudio">
+        <h2>Heart (T) Sound Report</h2>
+        <img src="./heartTPlot.png" alt="Heart (T) data plot" id="heartTPlot" ,="" width="800">
+        <img src="./heartTSpectogram.png" alt="Heart (T) Spectogram" id="heartTSpectogram" ,="" width="800"><br>
+        <audio controls="">
+            <source src="./heartTFile.wav" type="audio/wav" id="heartTAudio">
             Your browser does not support the audio element.
         </audio>
-        <p id='breathStats'></p>
-        <img src="./breathZCR.png" alt="breath ZCR" id="breathZCR", width="800">
-        <img src="./breathShort Time Energy.png" alt="breath Short Time Energy" id="breathShortEnergy", width="800">
-        <img src="./breathEnergy Entropy.png" alt="breath Energy Entropy" id="breathEnergyEntropy", width="800">
-        <img src="./breathSpectral Centroid.png" alt="breath Spectral Centroid" id="breathSpectralCentroid", width="800">
-        <img src="./breathSpectral Spread.png" alt="breath Spectral Spread" id="breathSpectralSpread", width="800">
-        <img src="./breathSpectral Entropy.png" alt="breath Spectral Entropy" id="breathSpectralEntropy", width="800">
-        <img src="./breathSpectral Flux.png" alt="breath Spectral Flux" id="breathSpectralFlux", width="800">
-        <img src="./breathSpectral Rolloff.png" alt="breath Spectral Rolloff" id="breathSpectralRolloff", width="800">
+        <p id="heartTStats"></p>
+        <img src="./heartTZCR.png" alt="Heart (T) ZCR" id="heartTZCR" ,="" width="800">
+        <img src="./heartTShort Time Energy.png" alt="Heart (T) Short Time Energy" id="heartTShortEnergy" ,="" width="800">
+        <img src="./heartTEnergy Entropy.png" alt="Heart (T) Energy Entropy" id="heartTEnergyEntropy" ,="" width="800">
+        <img src="./heartTSpectral Centroid.png" alt="Heart (T) Spectral Centroid" id="heartTSpectralCentroid" ,="" width="800">
+        <img src="./heartTSpectral Spread.png" alt="Heart (T) Spectral Spread" id="heartTSpectralSpread" ,="" width="800">
+        <img src="./heartTSpectral Entropy.png" alt="Heart (T) Spectral Entropy" id="heartTSpectralEntropy" ,="" width="800">
+        <img src="./heartTSpectral Flux.png" alt="Heart (T) Spectral Flux" id="heartTSpectralFlux" ,="" width="800">
+        <img src="./heartTSpectral Rolloff.png" alt="Heart (T) Spectral Rolloff" id="heartTSpectralRolloff" ,="" width="800">
+
+        <h2>Heart (M) Sound Report</h2>
+        <img src="./heartMPlot.png" alt="Heart (M) data plot" id="heartMPlot" ,="" width="800">
+        <img src="./heartMSpectogram.png" alt="Heart (M) Spectogram" id="heartMSpectogram" ,="" width="800"><br>
+        <audio controls="">
+            <source src="./heartMFile.wav" type="audio/wav" id="heartMAudio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="heartMStats"></p>
+        <img src="./heartMZCR.png" alt="Heart (M) ZCR" id="heartMZCR" ,="" width="800">
+        <img src="./heartMShort Time Energy.png" alt="Heart (M) Short Time Energy" id="heartMShortEnergy" ,="" width="800">
+        <img src="./heartMEnergy Entropy.png" alt="Heart (M) Energy Entropy" id="heartMEnergyEntropy" ,="" width="800">
+        <img src="./heartMSpectral Centroid.png" alt="Heart (M) Spectral Centroid" id="heartMSpectralCentroid" ,="" width="800">
+        <img src="./heartMSpectral Spread.png" alt="Heart (M) Spectral Spread" id="heartMSpectralSpread" ,="" width="800">
+        <img src="./heartMSpectral Entropy.png" alt="Heart (M) Spectral Entropy" id="heartMSpectralEntropy" ,="" width="800">
+        <img src="./heartMSpectral Flux.png" alt="Heart (M) Spectral Flux" id="heartMSpectralFlux" ,="" width="800">
+        <img src="./heartMSpectral Rolloff.png" alt="Heart (M) Spectral Rolloff" id="heartMSpectralRolloff" ,="" width="800">
+
+        <h2>Heart (E) Sound Report</h2>
+        <img src="./heartEPlot.png" alt="Heart (E) data plot" id="heartEPlot" ,="" width="800">
+        <img src="./heartESpectogram.png" alt="Heart (E) Spectogram" id="heartESpectogram" ,="" width="800"><br>
+        <audio controls="">
+            <source src="./heartEFile.wav" type="audio/wav" id="heartEAudio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="heartEStats"></p>
+        <img src="./heartEZCR.png" alt="Heart (E) ZCR" id="heartEZCR" ,="" width="800">
+        <img src="./heartEShort Time Energy.png" alt="Heart (E) Short Time Energy" id="heartEShortEnergy" ,="" width="800">
+        <img src="./heartEEnergy Entropy.png" alt="Heart (E) Energy Entropy" id="heartEEnergyEntropy" ,="" width="800">
+        <img src="./heartESpectral Centroid.png" alt="Heart (E) Spectral Centroid" id="heartESpectralCentroid" ,="" width="800">
+        <img src="./heartESpectral Spread.png" alt="Heart (E) Spectral Spread" id="heartESpectralSpread" ,="" width="800">
+        <img src="./heartESpectral Entropy.png" alt="Heart (E) Spectral Entropy" id="heartESpectralEntropy" ,="" width="800">
+        <img src="./heartESpectral Flux.png" alt="Heart (E) Spectral Flux" id="heartESpectralFlux" ,="" width="800">
+        <img src="./heartESpectral Rolloff.png" alt="Heart (E) Spectral Rolloff" id="heartESpectralRolloff" ,="" width="800">
+
+        <h2>Breath (L1) Sound Report</h2>
+        <img src="./breathL1Plot.png" alt="Breath (L1) data plot" id="breathL1Plot" width="800">
+        <img src="./breathL1Spectogram.png" alt="Breath (L1) Spectogram" id="breathL1Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathL1File.wav" type="audio/wav" id="breathL1Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathL1Stats"></p>
+        <img src="./breathL1ZCR.png" alt="breathL1 ZCR" id="breathL1ZCR" ,="" width="800">
+        <img src="./breathL1Short Time Energy.png" alt="breathL1 Short Time Energy" id="breathL1ShortEnergy" ,="" width="800">
+        <img src="./breathL1Energy Entropy.png" alt="breathL1 Energy Entropy" id="breathL1EnergyEntropy" ,="" width="800">
+        <img src="./breathL1Spectral Centroid.png" alt="breathL1 Spectral Centroid" id="breathL1SpectralCentroid" ,="" width="800">
+        <img src="./breathL1Spectral Spread.png" alt="breathL1 Spectral Spread" id="breathL1SpectralSpread" ,="" width="800">
+        <img src="./breathL1Spectral Entropy.png" alt="breathL1 Spectral Entropy" id="breathL1SpectralEntropy" ,="" width="800">
+        <img src="./breathL1Spectral Flux.png" alt="breathL1 Spectral Flux" id="breathL1SpectralFlux" ,="" width="800">
+        <img src="./breathL1Spectral Rolloff.png" alt="breathL1 Spectral Rolloff" id="breathL1SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (L2) Sound Report</h2>
+        <img src="./breathL2Plot.png" alt="Breath (L2) data plot" id="breathL2Plot" width="800">
+        <img src="./breathL2Spectogram.png" alt="Breath (L2) Spectogram" id="breathL2Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathL2File.wav" type="audio/wav" id="breathL2Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathL2Stats"></p>
+        <img src="./breathL2ZCR.png" alt="breathL2 ZCR" id="breathL2ZCR" ,="" width="800">
+        <img src="./breathL2Short Time Energy.png" alt="breathL2 Short Time Energy" id="breathL2ShortEnergy" ,="" width="800">
+        <img src="./breathL2Energy Entropy.png" alt="breathL2 Energy Entropy" id="breathL2EnergyEntropy" ,="" width="800">
+        <img src="./breathL2Spectral Centroid.png" alt="breathL2 Spectral Centroid" id="breathL2SpectralCentroid" ,="" width="800">
+        <img src="./breathL2Spectral Spread.png" alt="breathL2 Spectral Spread" id="breathL2SpectralSpread" ,="" width="800">
+        <img src="./breathL2Spectral Entropy.png" alt="breathL2 Spectral Entropy" id="breathL2SpectralEntropy" ,="" width="800">
+        <img src="./breathL2Spectral Flux.png" alt="breathL2 Spectral Flux" id="breathL2SpectralFlux" ,="" width="800">
+        <img src="./breathL2Spectral Rolloff.png" alt="breathL2 Spectral Rolloff" id="breathL2SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (L3) Sound Report</h2>
+        <img src="./breathL3Plot.png" alt="Breath (L3) data plot" id="breathL3Plot" width="800">
+        <img src="./breathL3Spectogram.png" alt="Breath (L3) Spectogram" id="breathL3Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathL3File.wav" type="audio/wav" id="breathL3Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathL3Stats"></p>
+        <img src="./breathL3ZCR.png" alt="breathL3 ZCR" id="breathL3ZCR" ,="" width="800">
+        <img src="./breathL3Short Time Energy.png" alt="breathL3 Short Time Energy" id="breathL3ShortEnergy" ,="" width="800">
+        <img src="./breathL3Energy Entropy.png" alt="breathL3 Energy Entropy" id="breathL3EnergyEntropy" ,="" width="800">
+        <img src="./breathL3Spectral Centroid.png" alt="breathL3 Spectral Centroid" id="breathL3SpectralCentroid" ,="" width="800">
+        <img src="./breathL3Spectral Spread.png" alt="breathL3 Spectral Spread" id="breathL3SpectralSpread" ,="" width="800">
+        <img src="./breathL3Spectral Entropy.png" alt="breathL3 Spectral Entropy" id="breathL3SpectralEntropy" ,="" width="800">
+        <img src="./breathL3Spectral Flux.png" alt="breathL3 Spectral Flux" id="breathL3SpectralFlux" ,="" width="800">
+        <img src="./breathL3Spectral Rolloff.png" alt="breathL3 Spectral Rolloff" id="breathL3SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (L4) Sound Report</h2>
+        <img src="./breathL4Plot.png" alt="Breath (L4) data plot" id="breathL4Plot" width="800">
+        <img src="./breathL4Spectogram.png" alt="Breath (L4) Spectogram" id="breathL4Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathL4File.wav" type="audio/wav" id="breathL4Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathL4Stats"></p>
+        <img src="./breathL4ZCR.png" alt="breathL4 ZCR" id="breathL4ZCR" ,="" width="800">
+        <img src="./breathL4Short Time Energy.png" alt="breathL4 Short Time Energy" id="breathL4ShortEnergy" ,="" width="800">
+        <img src="./breathL4Energy Entropy.png" alt="breathL4 Energy Entropy" id="breathL4EnergyEntropy" ,="" width="800">
+        <img src="./breathL4Spectral Centroid.png" alt="breathL4 Spectral Centroid" id="breathL4SpectralCentroid" ,="" width="800">
+        <img src="./breathL4Spectral Spread.png" alt="breathL4 Spectral Spread" id="breathL4SpectralSpread" ,="" width="800">
+        <img src="./breathL4Spectral Entropy.png" alt="breathL4 Spectral Entropy" id="breathL4SpectralEntropy" ,="" width="800">
+        <img src="./breathL4Spectral Flux.png" alt="breathL4 Spectral Flux" id="breathL4SpectralFlux" ,="" width="800">
+        <img src="./breathL4Spectral Rolloff.png" alt="breathL4 Spectral Rolloff" id="breathL4SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (L5) Sound Report</h2>
+        <img src="./breathL5Plot.png" alt="Breath (L5) data plot" id="breathL5Plot" width="800">
+        <img src="./breathL5Spectogram.png" alt="Breath (L5) Spectogram" id="breathL5Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathL5File.wav" type="audio/wav" id="breathL5Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathL5Stats"></p>
+        <img src="./breathL5ZCR.png" alt="breathL5 ZCR" id="breathL5ZCR" ,="" width="800">
+        <img src="./breathL5Short Time Energy.png" alt="breathL5 Short Time Energy" id="breathL5ShortEnergy" ,="" width="800">
+        <img src="./breathL5Energy Entropy.png" alt="breathL5 Energy Entropy" id="breathL5EnergyEntropy" ,="" width="800">
+        <img src="./breathL5Spectral Centroid.png" alt="breathL5 Spectral Centroid" id="breathL5SpectralCentroid" ,="" width="800">
+        <img src="./breathL5Spectral Spread.png" alt="breathL5 Spectral Spread" id="breathL5SpectralSpread" ,="" width="800">
+        <img src="./breathL5Spectral Entropy.png" alt="breathL5 Spectral Entropy" id="breathL5SpectralEntropy" ,="" width="800">
+        <img src="./breathL5Spectral Flux.png" alt="breathL5 Spectral Flux" id="breathL5SpectralFlux" ,="" width="800">
+        <img src="./breathL5Spectral Rolloff.png" alt="breathL5 Spectral Rolloff" id="breathL5SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (L6) Sound Report</h2>
+        <img src="./breathL6Plot.png" alt="Breath (L6) data plot" id="breathL6Plot" width="800">
+        <img src="./breathL6Spectogram.png" alt="Breath (L6) Spectogram" id="breathL6Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathL6File.wav" type="audio/wav" id="breathL6Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathL6Stats"></p>
+        <img src="./breathL6ZCR.png" alt="breathL6 ZCR" id="breathL6ZCR" ,="" width="800">
+        <img src="./breathL6Short Time Energy.png" alt="breathL6 Short Time Energy" id="breathL6ShortEnergy" ,="" width="800">
+        <img src="./breathL6Energy Entropy.png" alt="breathL6 Energy Entropy" id="breathL6EnergyEntropy" ,="" width="800">
+        <img src="./breathL6Spectral Centroid.png" alt="breathL6 Spectral Centroid" id="breathL6SpectralCentroid" ,="" width="800">
+        <img src="./breathL6Spectral Spread.png" alt="breathL6 Spectral Spread" id="breathL6SpectralSpread" ,="" width="800">
+        <img src="./breathL6Spectral Entropy.png" alt="breathL6 Spectral Entropy" id="breathL6SpectralEntropy" ,="" width="800">
+        <img src="./breathL6Spectral Flux.png" alt="breathL6 Spectral Flux" id="breathL6SpectralFlux" ,="" width="800">
+        <img src="./breathL6Spectral Rolloff.png" alt="breathL6 Spectral Rolloff" id="breathL6SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (R1) Sound Report</h2>
+        <img src="./breathR1Plot.png" alt="Breath (R1) data plot" id="breathR1Plot" width="800">
+        <img src="./breathR1Spectogram.png" alt="Breath (R1) Spectogram" id="breathR1Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathR1File.wav" type="audio/wav" id="breathR1Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathR1Stats"></p>
+        <img src="./breathR1ZCR.png" alt="breathR1 ZCR" id="breathR1ZCR" ,="" width="800">
+        <img src="./breathR1Short Time Energy.png" alt="breathR1 Short Time Energy" id="breathR1ShortEnergy" ,="" width="800">
+        <img src="./breathR1Energy Entropy.png" alt="breathR1 Energy Entropy" id="breathR1EnergyEntropy" ,="" width="800">
+        <img src="./breathR1Spectral Centroid.png" alt="breathR1 Spectral Centroid" id="breathR1SpectralCentroid" ,="" width="800">
+        <img src="./breathR1Spectral Spread.png" alt="breathR1 Spectral Spread" id="breathR1SpectralSpread" ,="" width="800">
+        <img src="./breathR1Spectral Entropy.png" alt="breathR1 Spectral Entropy" id="breathR1SpectralEntropy" ,="" width="800">
+        <img src="./breathR1Spectral Flux.png" alt="breathR1 Spectral Flux" id="breathR1SpectralFlux" ,="" width="800">
+        <img src="./breathR1Spectral Rolloff.png" alt="breathR1 Spectral Rolloff" id="breathR1SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (R2) Sound Report</h2>
+        <img src="./breathR2Plot.png" alt="Breath (R2) data plot" id="breathR2Plot" width="800">
+        <img src="./breathR2Spectogram.png" alt="Breath (R2) Spectogram" id="breathR2Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathR2File.wav" type="audio/wav" id="breathR2Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathR2Stats"></p>
+        <img src="./breathR2ZCR.png" alt="breathR2 ZCR" id="breathR2ZCR" ,="" width="800">
+        <img src="./breathR2Short Time Energy.png" alt="breathR2 Short Time Energy" id="breathR2ShortEnergy" ,="" width="800">
+        <img src="./breathR2Energy Entropy.png" alt="breathR2 Energy Entropy" id="breathR2EnergyEntropy" ,="" width="800">
+        <img src="./breathR2Spectral Centroid.png" alt="breathR2 Spectral Centroid" id="breathR2SpectralCentroid" ,="" width="800">
+        <img src="./breathR2Spectral Spread.png" alt="breathR2 Spectral Spread" id="breathR2SpectralSpread" ,="" width="800">
+        <img src="./breathR2Spectral Entropy.png" alt="breathR2 Spectral Entropy" id="breathR2SpectralEntropy" ,="" width="800">
+        <img src="./breathR2Spectral Flux.png" alt="breathR2 Spectral Flux" id="breathR2SpectralFlux" ,="" width="800">
+        <img src="./breathR2Spectral Rolloff.png" alt="breathR2 Spectral Rolloff" id="breathR2SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (R3) Sound Report</h2>
+        <img src="./breathR3Plot.png" alt="Breath (R3) data plot" id="breathR3Plot" width="800">
+        <img src="./breathR3Spectogram.png" alt="Breath (R3) Spectogram" id="breathR3Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathR3File.wav" type="audio/wav" id="breathR3Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathR3Stats"></p>
+        <img src="./breathR3ZCR.png" alt="breathR3 ZCR" id="breathR3ZCR" ,="" width="800">
+        <img src="./breathR3Short Time Energy.png" alt="breathR3 Short Time Energy" id="breathR3ShortEnergy" ,="" width="800">
+        <img src="./breathR3Energy Entropy.png" alt="breathR3 Energy Entropy" id="breathR3EnergyEntropy" ,="" width="800">
+        <img src="./breathR3Spectral Centroid.png" alt="breathR3 Spectral Centroid" id="breathR3SpectralCentroid" ,="" width="800">
+        <img src="./breathR3Spectral Spread.png" alt="breathR3 Spectral Spread" id="breathR3SpectralSpread" ,="" width="800">
+        <img src="./breathR3Spectral Entropy.png" alt="breathR3 Spectral Entropy" id="breathR3SpectralEntropy" ,="" width="800">
+        <img src="./breathR3Spectral Flux.png" alt="breathR3 Spectral Flux" id="breathR3SpectralFlux" ,="" width="800">
+        <img src="./breathR3Spectral Rolloff.png" alt="breathR3 Spectral Rolloff" id="breathR3SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (R4) Sound Report</h2>
+        <img src="./breathR4Plot.png" alt="Breath (R4) data plot" id="breathR4Plot" width="800">
+        <img src="./breathR4Spectogram.png" alt="Breath (R4) Spectogram" id="breathR4Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathR4File.wav" type="audio/wav" id="breathR4Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathR4Stats"></p>
+        <img src="./breathR4ZCR.png" alt="breathR4 ZCR" id="breathR4ZCR" ,="" width="800">
+        <img src="./breathR4Short Time Energy.png" alt="breathR4 Short Time Energy" id="breathR4ShortEnergy" ,="" width="800">
+        <img src="./breathR4Energy Entropy.png" alt="breathR4 Energy Entropy" id="breathR4EnergyEntropy" ,="" width="800">
+        <img src="./breathR4Spectral Centroid.png" alt="breathR4 Spectral Centroid" id="breathR4SpectralCentroid" ,="" width="800">
+        <img src="./breathR4Spectral Spread.png" alt="breathR4 Spectral Spread" id="breathR4SpectralSpread" ,="" width="800">
+        <img src="./breathR4Spectral Entropy.png" alt="breathR4 Spectral Entropy" id="breathR4SpectralEntropy" ,="" width="800">
+        <img src="./breathR4Spectral Flux.png" alt="breathR4 Spectral Flux" id="breathR4SpectralFlux" ,="" width="800">
+        <img src="./breathR4Spectral Rolloff.png" alt="breathR4 Spectral Rolloff" id="breathR4SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (R5) Sound Report</h2>
+        <img src="./breathR5Plot.png" alt="Breath (R5) data plot" id="breathR5Plot" width="800">
+        <img src="./breathR5Spectogram.png" alt="Breath (R5) Spectogram" id="breathR5Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathR5File.wav" type="audio/wav" id="breathR5Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathR5Stats"></p>
+        <img src="./breathR5ZCR.png" alt="breathR5 ZCR" id="breathR5ZCR" ,="" width="800">
+        <img src="./breathR5Short Time Energy.png" alt="breathR5 Short Time Energy" id="breathR5ShortEnergy" ,="" width="800">
+        <img src="./breathR5Energy Entropy.png" alt="breathR5 Energy Entropy" id="breathR5EnergyEntropy" ,="" width="800">
+        <img src="./breathR5Spectral Centroid.png" alt="breathR5 Spectral Centroid" id="breathR5SpectralCentroid" ,="" width="800">
+        <img src="./breathR5Spectral Spread.png" alt="breathR5 Spectral Spread" id="breathR5SpectralSpread" ,="" width="800">
+        <img src="./breathR5Spectral Entropy.png" alt="breathR5 Spectral Entropy" id="breathR5SpectralEntropy" ,="" width="800">
+        <img src="./breathR5Spectral Flux.png" alt="breathR5 Spectral Flux" id="breathR5SpectralFlux" ,="" width="800">
+        <img src="./breathR5Spectral Rolloff.png" alt="breathR5 Spectral Rolloff" id="breathR5SpectralRolloff" ,="" width="800">
+
+        <h2>Breath (R6) Sound Report</h2>
+        <img src="./breathR6Plot.png" alt="Breath (R6) data plot" id="breathR6Plot" width="800">
+        <img src="./breathR6Spectogram.png" alt="Breath (R6) Spectogram" id="breathR6Spectogram" width="800"><br>
+        <audio controls="">
+            <source src="./breathR6File.wav" type="audio/wav" id="breathR6Audio">
+            Your browser does not support the audio element.
+        </audio>
+        <p id="breathR6Stats"></p>
+        <img src="./breathR6ZCR.png" alt="breathR6 ZCR" id="breathR6ZCR" ,="" width="800">
+        <img src="./breathR6Short Time Energy.png" alt="breathR6 Short Time Energy" id="breathR6ShortEnergy" ,="" width="800">
+        <img src="./breathR6Energy Entropy.png" alt="breathR6 Energy Entropy" id="breathR6EnergyEntropy" ,="" width="800">
+        <img src="./breathR6Spectral Centroid.png" alt="breathR6 Spectral Centroid" id="breathR6SpectralCentroid" ,="" width="800">
+        <img src="./breathR6Spectral Spread.png" alt="breathR6 Spectral Spread" id="breathR6SpectralSpread" ,="" width="800">
+        <img src="./breathR6Spectral Entropy.png" alt="breathR6 Spectral Entropy" id="breathR6SpectralEntropy" ,="" width="800">
+        <img src="./breathR6Spectral Flux.png" alt="breathR6 Spectral Flux" id="breathR6SpectralFlux" ,="" width="800">
+        <img src="./breathR6Spectral Rolloff.png" alt="breathR6 Spectral Rolloff" id="breathR6SpectralRolloff" ,="" width="800">
 
         <h2>Speech Sound Report</h2>
         <img src="./speechPlot.png" alt="Speech data plot" id="speechPlot" width="800">
         <img src="./speechSpectogram.png" alt="Speech Spectogram" id="speechSpectogram" width="800"><br>
-        <audio controls>
+        <audio controls="">
             <source src="./speechFile.wav" type="audio/wav" id="speechAudio">
             Your browser does not support the audio element.
         </audio>
-        <p id='speechStats'></p>
-        <img src="./speechZCR.png" alt="speech ZCR" id="speechZCR", width="800">
-        <img src="./speechShort Time Energy.png" alt="speech Short Time Energy" id="speechShortEnergy", width="800">
-        <img src="./speechEnergy Entropy.png" alt="speech Energy Entropy" id="speechEnergyEntropy", width="800">
-        <img src="./speechSpectral Centroid.png" alt="speech Spectral Centroid" id="speechSpectralCentroid", width="800">
-        <img src="./speechSpectral Spread.png" alt="speech Spectral Spread" id="speechSpectralSpread", width="800">
-        <img src="./speechSpectral Entropy.png" alt="speech Spectral Entropy" id="speechSpectralEntropy", width="800">
-        <img src="./speechSpectral Flux.png" alt="speech Spectral Flux" id="speechSpectralFlux", width="800">
-        <img src="./speechSpectral Rolloff.png" alt="speech Spectral Rolloff" id="speechSpectralRolloff", width="800">
-        <script src="control.js"></script>
-    </body>
+        <p id="speechStats"></p>
+        <img src="./speechZCR.png" alt="speech ZCR" id="speechZCR" ,="" width="800">
+        <img src="./speechShort Time Energy.png" alt="speech Short Time Energy" id="speechShortEnergy" ,="" width="800">
+        <img src="./speechEnergy Entropy.png" alt="speech Energy Entropy" id="speechEnergyEntropy" ,="" width="800">
+        <img src="./speechSpectral Centroid.png" alt="speech Spectral Centroid" id="speechSpectralCentroid" ,="" width="800">
+        <img src="./speechSpectral Spread.png" alt="speech Spectral Spread" id="speechSpectralSpread" ,="" width="800">
+        <img src="./speechSpectral Entropy.png" alt="speech Spectral Entropy" id="speechSpectralEntropy" ,="" width="800">
+        <img src="./speechSpectral Flux.png" alt="speech Spectral Flux" id="speechSpectralFlux" ,="" width="800">
+        <img src="./speechSpectral Rolloff.png" alt="speech Spectral Rolloff" id="speechSpectralRolloff" ,="" width="800">
+        <script src="./control.js"></script>
+</body>

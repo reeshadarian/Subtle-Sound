@@ -13,8 +13,51 @@ from scipy.io import wavfile
 import librosa
 import librosa.display
 import PySimpleGUI as sg
+
 import matplotlib as mpl
 mpl.rcParams['agg.path.chunksize'] = 10000
+
+sg.theme('DefaultNoMoreNagging')
+leftcol = [ [sg.Text('Patient Name', font=(30)), sg.InputText(key = 'patientName'), sg.Button("Search Patient", key='patientNameSearchButton')],           
+            
+            [sg.Text('_'*70)],
+            [sg.Text('Heart', font=(30))],
+            
+            [sg.Button('Capture Heart (A)', key='heartRecA'), sg.Button('Stop', disabled=True, key='heartStopA')],
+            [sg.Button('Capture Heart (P)', key='heartRecP'), sg.Button('Stop', disabled=True, key='heartStopP')],
+            [sg.Button('Capture Heart (T)', key='heartRecT'), sg.Button('Stop', disabled=True, key='heartStopT')],
+            [sg.Button('Capture Heart (M)', key='heartRecM'), sg.Button('Stop', disabled=True, key='heartStopM')],
+            [sg.Button('Capture Heart (E)', key='heartRecE'), sg.Button('Stop', disabled=True, key='heartStopE')],
+            
+            [sg.Text('_'*70)],
+            [sg.Text('Lung', font=(30))],
+            [sg.Button('Capture Breath (L1)', key='breathRecL1'), sg.Button('Stop', disabled=True, key='breathStopL1')],
+            [sg.Button('Capture Breath (R1)', key='breathRecR1'), sg.Button('Stop', disabled=True, key='breathStopR1')],
+            [sg.Button('Capture Breath (L2)', key='breathRecL2'), sg.Button('Stop', disabled=True, key='breathStopL2')],
+            [sg.Button('Capture Breath (R2)', key='breathRecR2'), sg.Button('Stop', disabled=True, key='breathStopR2')],
+            [sg.Button('Capture Breath (L3)', key='breathRecL3'), sg.Button('Stop', disabled=True, key='breathStopL3')],
+            [sg.Button('Capture Breath (R3)', key='breathRecR3'), sg.Button('Stop', disabled=True, key='breathStopR3')],
+            [sg.Button('Capture Breath (L4)', key='breathRecL4'), sg.Button('Stop', disabled=True, key='breathStopL4')],
+            [sg.Button('Capture Breath (R4)', key='breathRecR4'), sg.Button('Stop', disabled=True, key='breathStopR4')],
+            [sg.Button('Capture Breath (L5)', key='breathRecL5'), sg.Button('Stop', disabled=True, key='breathStopL5')],
+            [sg.Button('Capture Breath (R5)', key='breathRecR5'), sg.Button('Stop', disabled=True, key='breathStopR5')],
+            [sg.Button('Capture Breath (L6)', key='breathRecL6'), sg.Button('Stop', disabled=True, key='breathStopL6')],
+            [sg.Button('Capture Breath (R6)', key='breathRecR6'), sg.Button('Stop', disabled=True, key='breathStopR6')],
+            
+            [sg.Text('_'*70)],
+            [sg.Text('Speech', font=(30))],
+            [sg.Button('Capture Speech', key='speechRec'), sg.Button('Stop', disabled=True, key='speechStop')],
+            
+            [sg.Text('_'*70)],
+            [sg.Text("Message:", size = (50, 1), key='messages', font=(30))],
+            [sg.Button('Done'), sg.Button('Cancel')]]
+
+rightcol = [[sg.Image('./heart.png')],
+            [sg.Image('./lung.png')]]
+
+layout = [[sg.Column(leftcol), sg.VSeperator(),sg.Column(rightcol, element_justification='c')]]
+
+window = sg.Window('Subtle Sounds', layout, finalize=True)
 
 p = pyaudio.PyAudio()
 info = p.get_host_api_info_by_index(0)
@@ -42,7 +85,7 @@ def make_plots(filename, signal_type,  file_path):
 
     t = np.linspace(0, len(audio_normalised)/44100, len(audio_normalised))
     plt.plot(t[:len(audio_normalised)], audio_normalised)
-    plt.title("Amplitude ({0})".format(signal_type))
+    plt.title("Amplitude")
     plt.savefig(file_path+signal_type+"Plot.png", dpi = 1200)
     plt.close()
     
@@ -53,7 +96,7 @@ def make_plots(filename, signal_type,  file_path):
     DB = librosa.amplitude_to_db(D, ref=np.max)
     librosa.display.specshow(DB, sr=sr, hop_length=hop_length, x_axis='time', y_axis='log');
     plt.colorbar(format='%+2.0f dB')
-    plt.title("Spectogram ({0})".format(signal_type))
+    plt.title("Spectogram")
     plt.savefig(file_path+signal_type+"Spectogram.png", dpi = 1200)
     plt.close()
 
@@ -61,34 +104,44 @@ def measurePitch(file_name, f0min = 20, f0max = 1000, unit = 'Hertz', sound_type
     voiceID = parselmouth.Sound(file_name)
     sound = parselmouth.Sound(voiceID) # read the sound
     harmonicity = call(sound, "To Harmonicity (cc)", 0.01, 20, 0.1, 1.0)
+    window.refresh()
     hnr = call(harmonicity, "Get mean", 0, 0)
+    window.refresh()
     pointProcess = call(sound, "To PointProcess (periodic, cc)", f0min, f0max)
+    window.refresh()
     localJitter = call(pointProcess, "Get jitter (local)", 0, 0, 0.0001, 0.02, 1.3)
+    window.refresh()
     localabsoluteJitter = call(pointProcess, "Get jitter (local, absolute)", 0, 0, 0.0001, 0.02, 1.3)
+    window.refresh()
     localShimmer =  call([sound, pointProcess], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
+    window.refresh()
     localdbShimmer = call([sound, pointProcess], "Get shimmer (local_dB)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
+    window.refresh()
     return hnr, localJitter, localabsoluteJitter, localShimmer, localdbShimmer
 
 def shortTermAnalyses(sound_type, filename, patient_name):
     fs, signal = wavfile.read(filename)
+    window.refresh()
     if sound_type == 'speech':
-        print(filename, signal)
         s = audioSegmentation.silence_removal(signal, fs, 0.5, 0.1, weight=0.2)
         signal2 = np.concatenate([signal[int((i[0]+0.1)*fs):int((i[1]+0.1)*fs)] for i in s])
         wavfile.write("database/{0}/speechFileSegmented.wav".format(patient_name), fs, signal2)
         s1 = ShortTermFeatures.feature_extraction(signal[:, 0], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        window.refresh()
         s2 = ShortTermFeatures.feature_extraction(signal[:, 1], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
-        
+        window.refresh()
         filename = filename[:-4] + "1.wav"
         fs, signal = wavfile.read(filename)
         s = audioSegmentation.silence_removal(signal, fs, 0.5, 0.1, weight=0.2)
         signal2 = np.concatenate([signal[int((i[0]+0.1)*fs):int((i[1]+0.1)*fs)] for i in s])
         wavfile.write("database/{0}/speechFileSegmented1.wav".format(patient_name), fs, signal2)
         s3 = ShortTermFeatures.feature_extraction(signal[:, 0], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
+        window.refresh()
         s4 = ShortTermFeatures.feature_extraction(signal[:, 1], fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
-        print((s1+s2+s3+s4)/4)
-        return (s1+s2+s3+s4)/4
-        
+        window.refresh()
+        n = min(s1.shape[0], s2.shape[0], s3.shape[0], s4.shape[0])
+        m = min(s1.shape[1], s2.shape[1], s3.shape[1], s4.shape[1])
+        return (s1[:n, :m]+s2[:n, :m]+s3[:n, :m]+s4[:n, :m])/4
     else:
         return ShortTermFeatures.feature_extraction(signal, fs, 0.05*fs, 0.025*fs, deltas=True)[0][:8]
 
@@ -96,15 +149,15 @@ def display_data(signal_type,  patient_name):
     res = ''
     file_path = 'database/' + patient_name + '/'
     filename = file_path + signal_type + 'File.wav' 
-    if signal_type == 'heart':
-        title = 'Heart Data'
+    if 'heart' in signal_type:
+        title = 'Heart ({0}) Data'.format(signal_type[-1])
         
     elif signal_type == 'speech':
         title = 'Speech Data'
         segmented = file_path + signal_type + 'FileSegmented.wav'
         segmented1 = file_path + signal_type + 'FileSegmented1.wav'
     else:
-        title = 'Breathing Data'
+        title = 'Breathing ({0}) Data'.format(signal_type[-2:])
     ifile = wave.open(filename)
     samples = ifile.getnframes()
     audio = ifile.readframes(samples)
@@ -116,19 +169,21 @@ def display_data(signal_type,  patient_name):
     make_plots(filename, signal_type,  file_path)
     if signal_type == 'speech':
         file = open(patient_name+"transcriptFile.txt", "w")
+        window.refresh()
         with speech_recognition.WavFile(filename) as source:              # use "test.wav" as the audio source
             audio = recog.record(source)                        # extract audio data from the file
             try:
                 res += 'Transcript: ' + recog.recognize_google(audio) +'<br>'
             except:                                 # speech is unintelligible
                 res += 'Transcript: Could not understand audio' + '<br>'
+        window.refresh()
         file.close()
         
     data = shortTermAnalyses(signal_type, filename, patient_name)
     names = ['ZCR', 'Short Time Energy', 'Energy Entropy', 'Spectral Centroid', 'Spectral Spread', 'Spectral Entropy', 'Spectral Flux', 'Spectral Rolloff']
     for i in range(8):
         plt.plot(np.linspace(0, len(yy)/44100, len(data[i])), data[i])
-        plt.title("{0} ({2}), Mean = {1:.3e}".format(names[i], np.mean(data[i]), signal_type))
+        plt.title("{0}, Mean = {1:.3e}".format(names[i], np.mean(data[i])))
         plt.savefig(file_path+signal_type+names[i]+'.png', dpi = 1200)
         plt.close()
     if signal_type == "speech":
@@ -144,17 +199,6 @@ def display_data(signal_type,  patient_name):
     res += 'Local Shimmer dB: ' + str(localdbShimmer) + '<br>'
     return res
 
-layout = [  [sg.InputText(key = 'patientNameSearch'), sg.Button("Search Patient", key='patientNameSearchButton')],
-            [sg.Text('Patient Name'), sg.InputText(key='patientName')],
-            
-            [sg.Button('Capture Heart', key='heartRec'), sg.Button('Stop', disabled=True, key='heartStop')],
-            [sg.Button('Capture Breath', key='breathRec'), sg.Button('Stop', disabled=True, key='breathStop')],
-            [sg.Button('Capture Speech', key='speechRec'), sg.Button('Stop', disabled=True, key='speechStop')],
-            [sg.Text("Message:", size = (50, 1), key='messages')],
-            [sg.Button('Done'), sg.Button('Cancel')]]
-
-window = sg.Window('Subtle Sounds', layout, finalize=True)
-
 def callback(in_data, frame_count, time_info, status):
     Recordframes.append(in_data)
     return (in_data, pyaudio.paContinue)
@@ -168,7 +212,7 @@ while True:
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         break
     elif event == 'patientNameSearchButton':
-        patient_name = values['patientNameSearch']
+        patient_name = values['patientName']
         if os.path.exists('database/{0}/index.html'.format(patient_name)):
             webbrowser.open('file://' + os.path.realpath('database/'+patient_name+'/index.html'))
         else:
@@ -195,7 +239,8 @@ while True:
             window.refresh()
             window['messages'].update('Message: Enter patient name')
             window.refresh()
-    elif event == 'heartRec':
+            
+    elif 'heartRec' in event:
         p = pyaudio.PyAudio()
         window.refresh()
         window['messages'].update('Message: Recording heart')
@@ -207,13 +252,14 @@ while True:
                 os.makedirs('database/{0}/'.format(patient_name))
             stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = stetho_idx, frames_per_buffer=1024, stream_callback=callback)
             stream.start_stream()
-            window['heartRec'].update(disabled=True)
-            window['heartStop'].update(disabled=False)
+            window[event].update(disabled=True)
+            window['heartStop'+event[8:]].update(disabled=False)
         else:
             window.refresh()
             window['messages'].update('Message: Enter patient name')
             window.refresh()
-    elif event == 'breathRec':
+            
+    elif 'breathRec' in event:
         p = pyaudio.PyAudio()
         window.refresh()
         window['messages'].update('Message: Recording breath')
@@ -225,8 +271,8 @@ while True:
                 os.makedirs('database/{0}/'.format(patient_name))
             stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, input_device_index = stetho_idx, frames_per_buffer=1024, stream_callback=callback)
             stream.start_stream()
-            window['breathRec'].update(disabled=True)
-            window['breathStop'].update(disabled=False)
+            window[event].update(disabled=True)
+            window['breathStop'+event[9:]].update(disabled=False)
         else:
             window.refresh()
             window['messages'].update('Message: Enter patient name')
@@ -255,7 +301,7 @@ while True:
         window['speechRec'].update(disabled=False)
         window['speechStop'].update(disabled=True)
         
-    elif event == 'heartStop':
+    elif 'heartStop' in event:
         stream.stop_stream()
         stream.close()
         p.terminate()
@@ -263,15 +309,15 @@ while True:
         window['messages'].update('Message:')
         window.refresh()
         patient_name = values['patientName']
-        waveFile = wave.open('database/{0}/heartFile.wav'.format(patient_name), 'wb')
+        waveFile = wave.open('database/{0}/heart{1}File.wav'.format(patient_name, event[9:]), 'wb')
         waveFile.setnchannels(1)
         waveFile.setsampwidth(p.get_sample_size(pyaudio.paInt16))
         waveFile.setframerate(44100)
         waveFile.writeframes(b''.join(Recordframes))
-        window['heartRec'].update(disabled=False)
-        window['heartStop'].update(disabled=True)
+        window['heartRec'+event[9:]].update(disabled=False)
+        window[event].update(disabled=True)
         
-    elif event == 'breathStop':
+    elif 'breathStop' in event:
         stream.stop_stream()
         stream.close()
         p.terminate()
@@ -279,35 +325,48 @@ while True:
         window['messages'].update('Message:')
         window.refresh()
         patient_name = values['patientName']
-        waveFile = wave.open('database/{0}/breathFile.wav'.format(patient_name), 'wb')
+        waveFile = wave.open('database/{0}/breath{1}File.wav'.format(patient_name, event[10:]), 'wb')
         waveFile.setnchannels(1)
         waveFile.setsampwidth(p.get_sample_size(pyaudio.paInt16))
         waveFile.setframerate(44100)
         waveFile.writeframes(b''.join(Recordframes))
-        window['breathRec'].update(disabled=False)
-        window['breathStop'].update(disabled=True)
+        window['breathRec'+event[10:]].update(disabled=False)
+        window[event].update(disabled=True)
         
     elif event =='Done':
+        patient_name = values['patientName']
+        s = """window.onload = function() {
+            document.getElementById('patientNameTitle').innerHTML = patientName + ' Report';
+            document.getElementById('reportTitle').innerHTML = patientName + ' Report';
+            document.getElementById('speechStats').innerHTML = speechStats;
+            
+        """
+        
+        contents = "var patientName = '" + patient_name + "';\n"
+        
         window.refresh()
         window['messages'].update('Message: Performing speech analyses')
         window.refresh()
         speechStats = display_data('speech', patient_name)
-        window['messages'].update('Message: Performing heart sound analyses')
+        
         window.refresh()
-        heartStats = display_data('heart', patient_name)
-        window['messages'].update('Message: Performing lung sound analyses')
+        for i in ['A', 'P', 'T', 'M', 'E']:
+            window['messages'].update('Message: Performing Heart ({0}) sound analyses'.format(i))
+            window.refresh()
+            s += "document.getElementById('heart{0}Stats').innerHTML = heart{0}Stats;\n".format(i)
+            contents += "var heart{0}Stats = '".format(i) + display_data('heart'+i, patient_name) + "';\n"
+        
         window.refresh()
-        breathStats = display_data('breath', patient_name)
-        s = """window.onload = function() {
-            document.getElementById('patientNameTitle').innerHTML = patientName + ' Report';
-            document.getElementById('reportTitle').innerHTML = patientName + ' Report';
-            document.getElementById('heartStats').innerHTML = heartStats;
-            document.getElementById('breathStats').innerHTML = breathStats;
-            document.getElementById('speechStats').innerHTML = speechStats;
-        }"""
-        contents = "var patientName = '" + patient_name + "';\n var heartStats = '" + heartStats + "';\n"
-        contents += "var breathStats = '" + breathStats + "';\n"
-        contents += "var speechStats = '" + speechStats + "';\n" + s
+        for i in ['L', 'R']:
+            for j in range(1, 7):
+                window['messages'].update('Message: Performing Lung ({0}) sound analyses'.format(i+str(j)))
+                window.refresh()
+                s += "document.getElementById('breath{0}Stats').innerHTML = breath{0}Stats;\n".format(i+str(j))
+                contents += "var breath{0}Stats = '".format(i+str(j)) + display_data('breath'+i+str(j), patient_name) + "';\n"
+        
+                
+        contents += "var speechStats = '" + speechStats + "';\n" + s + "}"
+        
         outfile = open('database/'+patient_name+'/control.js', 'w')
         outfile.write(contents);
         outfile.close()
